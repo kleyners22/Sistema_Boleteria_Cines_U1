@@ -1,0 +1,49 @@
+INSERT INTO cajero (cedula_cajero, numero_telefono, apellidos, nombres, correo, genero, direccion) VALUES 
+('1101122233', '0987654321', 'Jaramillo', 'Josvelth', 'josvelth.jaramillo@gmail.com', 'HOMBRE', 'Loja Centro'),
+('1102233445', '0976543210', 'Buri', 'Kleyner', 'kleynerburi33@gmail.com', 'HOMBRE', 'Av. Universitaria');
+
+INSERT INTO cliente (cedula_cliente, numero_telefono, apellidos, nombres, correo, genero, direccion) VALUES 
+('1104567890', '0981112233', 'Ochoa', 'Gisela', 'gisela.ochoa@gmail.com', 'MUJER', 'Loja Centro'),
+('1105678901', '0982223344', 'Silva', 'Hashly', 'hashly.silva@gmail.com', 'MUJER', 'Av. Universitaria'),
+('1106789012', '0983334455', 'Castillo', 'Domenica', 'domenica.castillo@gmail.com', 'MUJER', 'Alfaro Norte'),
+('1107890123', '0984445566', 'Salinas', 'Galilea', 'galilea.salinas@gmail.com', 'MUJER', 'Sur de Loja'),
+('1108901234', '0985556677', 'Berru', 'Zamya', 'zamya.berru@gmail.com', 'MUJER', 'Centro Norte');
+
+INSERT INTO cartelera (id_cartelera, fecha_inicio, fecha_fin) VALUES 
+('C001', '2026-05-20', '2026-05-27');
+
+INSERT INTO sala (numero_sala, asientos, estado) VALUES 
+(1, 40, 'ACTIVA'),
+(2, 40, 'INACTIVA'),
+(3, 40, 'ACTIVA'),
+(4, 40, 'ACTIVA'),
+(5, 40, 'ACTIVA'),
+(6, 40, 'INACTIVA'),
+(7, 40, 'INACTIVA'),
+(8, 40, 'INACTIVA'),
+(9, 40, 'INACTIVA'),
+(10, 40, 'ACTIVA');
+
+INSERT INTO tipo_boleto (id_tipo_boleto, nombre) VALUES 
+(1, 'General'),
+(2, 'VIP'),
+(3, 'Niños');
+
+INSERT INTO pelicula (id_pelicula, id_cartelera, titulo, duracion, clasificacion, genero) VALUES 
+(1, 'C001', 'Interstellar', 169, 'B', 'CIENCIA_FICCION'),
+(8, 'C001', 'Avatar', 162, 'A', 'CIENCIA_FICCION'),
+(3, 'C001', 'Batman', 152, 'B', 'ACCION'),
+(4, 'C001', 'El padrino', 175, 'C', 'DRAMA');
+
+INSERT INTO proyectar_pelicula (id_pelicula, numero_sala) VALUES 
+(1, 1),
+(8, 10),
+(3, 5),
+(4, 4);
+
+INSERT INTO boleto (numero_boleto, cedula_cajero, cedula_cliente, id_tipo_boleto, numero_sala, id_pelicula, asiento, hora, fecha, precio) VALUES 
+(1, '1101122233', '1104567890', 1, 1, 1, 15, '18:00:00', '2026-05-20', 6.50),
+(2, '1102233445', '1105678901', 3, 10, 8, 10, '16:30:00', '2026-05-21', 3.50),
+(3, '1101122233', '1106789012', 1, 1, 1, 16, '18:00:00', '2026-05-22', 6.50),
+(4, '1102233445', '1107890123', 2, 4, 4, 5, '14:00:00', '2026-05-24', 10.00),
+(5, '1101122233', '1108901234', 1, 5, 3, 22, '20:30:00', '2026-05-26', 6.50);

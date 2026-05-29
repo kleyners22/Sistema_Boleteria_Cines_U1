@@ -1,0 +1,75 @@
+Consultas
+
+//Consulta 1 proyeccion, seleccion, JOIN
+
+// Nombres y Apellidos de las personas que compraron un Boleto General
+
+//Algebra relacional
+π nombres,apellidos,nombre (σ nombre= ‘General’(cliente⋈ boleto ⋈ tipo_boleto)
+
+//SQL
+ SELECT cliente.nombres, cliente.apellidos, tipo_boleto.nombre
+ FROM cliente
+ JOIN boleto ON cliente.cedula_cliente = boleto.cedula_cliente
+ JOIN tipo_boleto ON boleto.id_tipo_boleto = tipo_boleto.id_tipo_boleto
+ WHERE tipo_boleto.nombre = 'General';
+
+
+//Consulta 2 
+Personas asistieron a la sala numero 10 y con que tipo de boleto
+
+//Algebra relacional
+π nombres,apellidos,nombre(σ numero_sala == 10 (cliente ⋈ boleto⋈tipo_boleto))
+
+MYSQL
+ Select cliente.nombres, cliente.apellidos, tipo_boleto.nombre
+ FROM cliente
+ JOIN boleto ON cliente.cedula_cliente = boleto.cedula_cliente
+ JOIN tipo_boleto ON boleto.id_tipo_boleto = tipo_boleto.id_tipo_boleto
+ JOIN sala ON boleto.numero_sala = sala.numero_sala
+ WHERE sala.numero_sala = 10;
+
+
+// Consulta 3
+Nombres, apellidos y correo de los clientes que compraron boletos con precio mayor a 5 dólares.
+
+//Algebra Relacional
+π nombres,apellidos,correo(σ precio > 5 (cliente⋈ boleto))
+
+//MYSQL
+Select cliente.nombres, cliente.apellidos, cliente.correo
+ FROM cliente
+ JOIN boleto ON cliente.cedula_cliente = boleto.cedula_cliente
+ WHERE boleto.precio > 5;
+ 
+//Consulta 4
+Nombres, apellidos, numero boleto,precio y tipo de boleto que compro un cliente en especifico 
+//Algebra Relacional
+π nombres,apellidos,numero_boleto, precio,nombre(σ cedula_cliente == 1104567890 (cliente⋈ boleto⋈tipo_boleto))
+//MYSQL
+
+SELECT cliente.nombres, cliente.apellidos, boleto.numero_boleto, boleto.precio, tipo_boleto.nombre
+FROM cliente
+JOIN boleto ON cliente.cedula_cliente = boleto.cedula_cliente
+JOIN tipo_boleto ON boleto.id_tipo_boleto = tipo_boleto.id_tipo_boleto
+WHERE cliente.cedula_cliente = 1104567890;
+
+//Consulta 5
+Mostrar a qué clientes el cajero vendió boletos y qué tipo de boletos fueron.
+
+//Algebra Relacional
+(cliente ⧑ boleto) ⧑ (σ nombres =='Josvelth' (cajero))
+
+//MYSQL
+
+SELECT cliente.nombres, cliente.apellidos
+FROM cliente
+JOIN boleto
+    ON cliente.cedula_cliente = boleto.cedula_cliente
+JOIN cajero
+    ON cajero.cedula_cajero = boleto.cedula_cajero
+WHERE cajero.nombres = 'Josvelth';
+
+
+	
+

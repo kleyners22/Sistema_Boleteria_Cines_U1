@@ -1,0 +1,81 @@
+ BASE DE DATOS sistema_boleteria_cines
+ 
+ CREATE TABLE cliente(
+    cedula_cliente VARCHAR(10) PRIMARY KEY,
+    numero_telefono VARCHAR(10) NOT NULL,
+    apellidos VARCHAR(30) NOT NULL,
+    nombres VARCHAR(30) NOT NULL,
+    correo VARCHAR(40) UNIQUE,
+    genero ENUM('HOMBRE','MUJER','OTRO'),
+    direccion VARCHAR (30) NOT NULL
+ );
+ 
+ CREATE TABLE cajero(
+    cedula_cajero VARCHAR(10) PRIMARY KEY,
+    numero_telefono VARCHAR(10) NOT NULL,
+    apellidos VARCHAR(30) NOT NULL,
+    nombres VARCHAR(30) NOT NULL,
+    correo VARCHAR(30) UNIQUE,
+    genero ENUM('HOMBRE','MUJER','OTRO'),
+    direccion VARCHAR(30) NOT NULL
+);
+
+
+CREATE TABLE sala(
+   numero_sala INT PRIMARY KEY,
+   asientos INT NOT NULL,
+   estado ENUM ('ACTIVA','INACTIVA')NOT NULL
+);
+
+
+CREATE TABLE cartelera (
+   id_cartelera VARCHAR (5) PRIMARY KEY,
+   fecha_inicio DATE NOT NULL,
+   fecha_fin DATE NOT NULL
+);
+
+
+CREATE TABLE pelicula(
+   id_pelicula INT PRIMARY KEY AUTO_INCREMENT,
+   id_cartelera VARCHAR(5) NOT NULL,
+   titulo VARCHAR (50) NOT NULL,
+   duracion INT NOT NULL,
+   clasificacion ENUM('AA','A','B','B15','C','D'),
+   genero  ENUM('ACCION','COMEDIA','DRAMA','TERROR','CIENCIA_FICCION','FANTASIA','ROMANCE','SUSPENSO','ANIMACION','AVENTURA','DOCUMENTAL','MUSICAL') NOT NULL,
+   FOREIGN KEY(id_cartelera) REFERENCES cartelera(id_cartelera)
+);
+
+
+CREATE TABLE proyectar_pelicula(
+   id_pelicula INT NOT NULL,
+   numero_sala INT NOT NULL,
+   PRIMARY KEY(id_pelicula, numero_sala),
+   FOREIGN KEY(id_pelicula) REFERENCES pelicula(id_pelicula),
+   FOREIGN KEY(numero_sala) REFERENCES sala(numero_sala)
+);
+
+
+CREATE TABLE tipo_boleto(
+   nombre VARCHAR(20) UNIQUE NOT NULL,
+   id_tipo_boleto INT PRIMARY KEY AUTO_INCREMENT
+);
+
+
+CREATE TABLE boleto(
+   numero_boleto INT PRIMARY KEY AUTO_INCREMENT,
+   cedula_cajero VARCHAR (10) NOT NULL,
+   cedula_cliente VARCHAR (10) NOT NULL,
+   id_tipo_boleto INT NOT NULL,
+   numero_sala INT NOT NULL,
+   id_pelicula INT NOT NULL,
+   asiento INT NOT NULL CHECK(asiento BETWEEN 1 AND 40),
+   hora TIME NOT NULL,
+   fecha DATE NOT NULL,
+   precio DECIMAL(6,2) NOT NULL,
+   FOREIGN KEY(cedula_cajero) REFERENCES cajero(cedula_cajero),
+   FOREIGN KEY(cedula_cliente) REFERENCES cliente(cedula_cliente),
+   FOREIGN KEY(id_tipo_boleto) REFERENCES tipo_boleto(id_tipo_boleto),
+   FOREIGN KEY(numero_sala) REFERENCES sala(numero_sala),
+   FOREIGN KEY(id_pelicula) REFERENCES pelicula(id_pelicula)    
+);
+
