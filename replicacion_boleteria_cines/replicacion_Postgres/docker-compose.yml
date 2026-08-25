@@ -1,0 +1,39 @@
+services:
+  pg-master:
+    image: bitnami/postgresql:latest
+    container_name: postgres-master
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=replicador
+      - POSTGRESQL_REPLICATION_PASSWORD=replica_pass
+      - POSTGRESQL_USERNAME=kleynerbuzz
+      - POSTGRESQL_PASSWORD=INTERLUDE44
+      - POSTGRESQL_POSTGRES_PASSWORD=INTERLUDE44
+      - POSTGRESQL_DATABASE=Boleteria_Cines_Postgres
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg_master_data:/bitnami/postgresql
+      - ./master/init:/docker-entrypoint-initdb.d
+
+  pg-slave:
+    image: bitnami/postgresql:latest
+    container_name: postgres-slave
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_MASTER_HOST=pg-master
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - POSTGRESQL_REPLICATION_USER=replicador
+      - POSTGRESQL_REPLICATION_PASSWORD=replica_pass
+      - POSTGRESQL_PASSWORD=INTERLUDE44
+    ports:
+      - "5433:5432"
+    depends_on:
+      - pg-master
+    volumes:  
+      - pg_slave_data:/bitnami/postgresql
+
+volumes:
+  pg_master_data:
+  pg_slave_data:

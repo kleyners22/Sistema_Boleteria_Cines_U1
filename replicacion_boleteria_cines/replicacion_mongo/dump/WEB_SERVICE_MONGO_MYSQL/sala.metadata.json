@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"numero_sala":{"$numberInt":"1"}},"name":"numero_sala_1","background":false}],"uuid":"63cdf87742ba47c3bd889af205f0a4f3","collectionName":"sala","type":"collection"}

@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"id_proyectar_pelicula":{"$numberInt":"1"}},"name":"id_proyectar_pelicula_1","background":false}],"uuid":"d13bc17116cf4224a7843fcde506106f","collectionName":"proyectar_pelicula","type":"collection"}

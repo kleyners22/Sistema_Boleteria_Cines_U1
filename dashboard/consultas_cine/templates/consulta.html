@@ -1,0 +1,461 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard CineTicket</title>
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+
+    body{
+
+        background:#111827;
+        color:white;
+        padding:35px;
+
+    }
+
+
+    /*=============================
+        ENCABEZADO
+    ==============================*/
+
+    .titulo{
+
+        text-align:center;
+        margin-bottom:40px;
+
+    }
+
+
+    .titulo h1{
+
+        color:#FBBF24;
+        font-size:42px;
+        margin-bottom:8px;
+
+    }
+
+
+    .titulo p{
+
+        color:#CBD5E1;
+        font-size:18px;
+
+    }
+
+
+
+    /*=============================
+        TARJETAS RESUMEN
+    ==============================*/
+
+
+    .estadisticas{
+
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:25px;
+        margin-bottom:40px;
+
+    }
+
+
+
+    .stat-card{
+
+        background:#1F2937;
+
+        border-radius:18px;
+
+        padding:25px;
+
+        display:flex;
+        align-items:center;
+
+        gap:25px;
+
+        box-shadow:0 10px 20px rgba(0,0,0,.35);
+
+        border-left:6px solid #FBBF24;
+
+        transition:.3s;
+
+        min-height:130px;
+
+    }
+
+
+    .stat-card:hover{
+
+        transform:translateY(-6px);
+
+    }
+
+
+
+    .icono{
+
+        width:75px;
+        height:75px;
+
+        border-radius:50%;
+
+        background:#374151;
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
+        font-size:35px;
+
+    }
+
+
+
+    .stat-card h2{
+
+        color:#FACC15;
+        font-size:38px;
+
+    }
+
+
+
+    .stat-card p{
+
+        color:#CBD5E1;
+        font-size:18px;
+
+    }
+
+
+
+
+    /*=============================
+        GRAFICOS
+    ==============================*/
+
+
+    .dashboard{
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:30px;
+
+    }
+
+
+
+    .card{
+
+        background:#1F2937;
+
+        border-radius:18px;
+
+        padding:22px;
+
+        box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+        transition:.3s;
+
+    }
+
+
+
+    .card:hover{
+
+        transform:translateY(-6px);
+
+    }
+
+
+
+    .card-header{
+
+        display:flex;
+
+        align-items:center;
+
+        gap:12px;
+
+        margin-bottom:18px;
+
+        padding-bottom:12px;
+
+        border-bottom:1px solid #374151;
+
+    }
+
+
+
+    .card-header span{
+
+        font-size:24px;
+
+    }
+
+
+
+    .card-header h3{
+
+        color:#FACC15;
+
+        font-size:22px;
+
+    }
+
+
+
+
+    .card img{
+
+        width:100%;
+
+        border-radius:12px;
+
+        background:white;
+
+        padding:10px;
+
+    }
+
+
+
+
+    footer{
+
+        margin-top:45px;
+
+        text-align:center;
+
+        color:#94A3B8;
+
+        font-size:14px;
+
+    }
+
+
+
+
+    /*=============================
+        RESPONSIVE
+    ==============================*/
+
+
+    @media(max-width:900px){
+
+
+        .dashboard{
+
+            grid-template-columns:1fr;
+
+        }
+
+
+    }
+
+
+
+    @media(max-width:700px){
+
+
+        body{
+
+            padding:20px;
+
+        }
+
+
+        .estadisticas{
+
+            grid-template-columns:1fr;
+
+        }
+
+
+
+        .titulo h1{
+
+            font-size:32px;
+
+        }
+
+
+    }
+
+
+
+    @media(max-width:500px){
+
+
+        .stat-card{
+
+            flex-direction:column;
+
+            text-align:center;
+
+        }
+
+
+    }
+
+
+
+</style>
+
+
+
+<div class="titulo">
+
+    <h1>🎬 Dashboard CineTicket</h1>
+
+    <p>Panel de estadísticas del Sistema de Venta de Boletos</p>
+
+</div>
+
+
+
+
+<!-- =============================
+     TARJETAS SUPERIORES
+============================== -->
+
+
+<div class="estadisticas">
+
+
+    <div class="stat-card">
+
+        <div class="icono">
+            🎟️
+        </div>
+
+        <div>
+
+            <h2>{{ total_boletos }}</h2>
+
+            <p>Boletos vendidos</p>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="stat-card">
+
+        <div class="icono">
+            💰
+        </div>
+
+        <div>
+
+            <h2>${{ ingresos }}</h2>
+
+            <p>Ingresos Totales</p>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="stat-card">
+
+        <div class="icono">
+            🎬
+        </div>
+
+        <div>
+
+            <h2>{{ peliculas }}</h2>
+
+            <p>Películas</p>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="stat-card">
+
+        <div class="icono">
+            👥
+        </div>
+
+        <div>
+
+            <h2>{{ clientes }}</h2>
+
+            <p>Clientes Registrados</p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- =============================
+        GRAFICOS
+============================== -->
+
+
+<div class="dashboard">
+
+
+    {% for nombre, imagen_b64 in graficos.items %}
+
+
+    <div class="card">
+
+
+        <div class="card-header">
+
+            <span>📊</span>
+
+            <h3>{{ nombre }}</h3>
+
+        </div>
+
+
+
+        <img 
+            src="data:image/png;base64,{{ imagen_b64 }}" 
+            alt="{{ nombre }}"
+        >
+
+
+    </div>
+
+
+    {% endfor %}
+
+
+
+</div>
+
+
+
+<footer>
+
+    CineTicket &copy; 2026 | Dashboard Estadístico
+
+</footer>

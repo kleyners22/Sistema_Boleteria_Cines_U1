@@ -1,0 +1,5 @@
+CREATE USER kleyner_read WITH PASSWORD 'INTERLUDE44';
+GRANT CONNECT ON DATABASE "Boleteria_Cines_Postgres" TO kleyner_read;
+GRANT USAGE ON SCHEMA public TO kleyner_read;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO kleyner_read;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO kleyner_read;

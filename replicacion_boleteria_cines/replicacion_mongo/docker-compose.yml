@@ -1,0 +1,40 @@
+services:
+  mongo-primary:
+    image: bitnami/mongodb:latest
+    container_name: mongo-primary
+    environment:
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_REPLICA_SET_KEY=INTERLUDE2244
+      - MONGODB_ROOT_PASSWORD=INTERLUDE44
+      - MONGODB_USERNAME=kleynerbuzz
+      - MONGODB_PASSWORD=INTERLUDE44
+      - MONGODB_DATABASE=WEB_SERVICE_MONGO_MYSQL
+      - MONGODB_ADVERTISED_HOSTNAME=mongo-primary
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo_primary_data:/bitnami/mongodb
+      - ./dump:/dump:ro
+
+  mongo-secondary:
+    image: bitnami/mongodb:latest
+    container_name: mongo-secondary
+    depends_on:
+      - mongo-primary
+    environment:
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_REPLICA_SET_KEY=INTERLUDE2244
+      - MONGODB_PRIMARY_HOST=mongo-primary
+      - MONGODB_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_PRIMARY_ROOT_PASSWORD=INTERLUDE44
+      - MONGODB_ADVERTISED_HOSTNAME=mongo-secondary
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongo_secondary_data:/bitnami/mongodb
+
+volumes:
+  mongo_primary_data:
+  mongo_secondary_data:

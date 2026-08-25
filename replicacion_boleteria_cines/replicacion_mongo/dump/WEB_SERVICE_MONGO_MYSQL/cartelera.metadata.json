@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"id_cartelera":{"$numberInt":"1"}},"name":"id_cartelera_1","background":false}],"uuid":"b8e7463d5bc64fff8940e95d558be3be","collectionName":"cartelera","type":"collection"}

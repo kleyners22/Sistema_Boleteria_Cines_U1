@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Venta de Boletos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-page: #f5f6f8;
+            --white: #ffffff;
+            --primary-blue: #16325c;
+            --secondary-blue: #1a428a;
+            --dark-card: #121c32;
+            --dark-inner: #192742;
+            --text-gray: #6b7280;
+            --border-color: #e5e7eb;
+            --info-bg: #eef4ff;
+            --success-bg: #ecfdf5;
+            --success-border: #d1fae5;
+            --success-text: #065f46;
+            --price-green: #22c55e;
+            --error-bg: #fef2f2;
+            --error-border: #fecaca;
+            --error-text: #991b1b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            margin: 0;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            color: var(--primary-blue);
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .header p {
+            color: var(--text-gray);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .section-title {
+            color: var(--primary-blue);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-box {
+            background-color: var(--secondary-blue);
+            color: white;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151;
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .input-control:focus {
+            border-color: var(--secondary-blue);
+        }
+
+        select.input-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        select.input-control:disabled {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+            border-color: #e5e7eb;
+        }
+
+        .cartelera-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #ede9fe;
+            color: #5b21b6;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .section-title-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .hint-text {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-top: -1.2rem;
+            margin-bottom: 1.5rem;
+            padding-left: 2px;
+        }
+
+        .info-box {
+            background-color: var(--info-bg);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-box li {
+            color: #4b5563;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-alert {
+            background-color: var(--error-bg);
+            border: 1px solid var(--error-border);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--error-text);
+            font-size: 14px;
+        }
+
+        .error-alert i {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 1.8rem 0;
+        }
+
+        .btn-submit {
+            background-color: var(--secondary-blue);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background-color: var(--primary-blue);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .ticket-card {
+            background-color: var(--dark-card);
+            border-radius: 12px;
+            padding: 2.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .ticket-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .ticket-header hr {
+            border: none;
+            border-top: 1px solid #374151;
+            flex: 1;
+        }
+
+        .ticket-header h2 {
+            margin: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-red {
+            background-color: #ef4444;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 16px;
+        }
+
+        .ticket-info-row {
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .ticket-divider {
+            border-top: 1px dashed #374151;
+            margin: 1.5rem 0;
+        }
+
+        .ticket-stats {
+            background-color: var(--dark-inner);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin: 1.5rem 0;
+        }
+
+        .stat-col {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-col:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background-color: #374151;
+        }
+
+        .stat-label {
+            color: #9ca3af;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .total-box {
+            background-color: var(--dark-inner);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .total-label {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .total-price {
+            color: var(--price-green);
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .success-card {
+            background-color: var(--success-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid var(--success-border);
+        }
+
+        .success-icon {
+            color: #10b981;
+            font-size: 28px;
+        }
+
+        .success-text p {
+            margin: 0;
+            color: var(--success-text);
+            font-size: 15px;
+        }
+
+        .success-text p:first-child {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .ticket-stats { grid-template-columns: 1fr; gap: 1.5rem; }
+            .stat-col:not(:last-child)::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <div class="header">
+            <h1><i class="fa-solid fa-clapperboard"></i> Sistema de Venta de Boletos</h1>
+            <p>Compra y generación automática de tickets de cine</p>
+        </div>
+
+        <div class="error-alert" id="panel-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="lbl-error"></span>
+        </div>
+
+        <div class="section-title">
+            <span class="icon-box"><i class="fa-solid fa-user"></i></span> Datos del Cliente
+        </div>
+        <div class="grid-2">
+            <input type="text"  id="txt-cedula"    class="input-control" placeholder="Cédula (10 caracteres)">
+            <input type="text"  id="txt-nombres"   class="input-control" placeholder="Nombres">
+            <input type="text"  id="txt-apellidos" class="input-control" placeholder="Apellidos">
+            <input type="tel"   id="txt-telefono"  class="input-control" placeholder="Teléfono (10 dígitos)">
+            <input type="email" id="txt-correo"    class="input-control" placeholder="Correo electrónico">
+            <input type="text"  id="txt-direccion" class="input-control" placeholder="Dirección">
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="section-title-row">
+            <div class="section-title" style="margin-bottom:0;">
+                <span class="icon-box"><i class="fa-solid fa-film"></i></span> Cartelera
+            </div>
+        </div>
+        <div class="grid-1" style="margin-top: 1rem;">
+            <select id="select-cartelera" class="input-control">
+                <option value="">Cargando carteleras...</option>
+            </select>
+        </div>
+        <p class="hint-text" id="hint-cartelera">Seleccione una cartelera para ver las películas disponibles.</p>
+
+        <hr class="section-divider">
+
+        <div class="section-title-row">
+            <div class="section-title" style="margin-bottom:0;">
+                <span class="icon-box"><i class="fa-solid fa-ticket"></i></span> Selección de Boleto
+            </div>
+            <span class="cartelera-badge" id="badge-cartelera" style="display:none;">
+                <i class="fa-solid fa-circle-dot" style="font-size:8px;"></i>
+                <span id="badge-texto">—</span>
+            </span>
+        </div>
+
+        <div class="grid-2" style="margin-top: 1rem;">
+            <select id="select-pelicula" class="input-control" disabled>
+                <option value="">Primero seleccione una cartelera</option>
+            </select>
+            <select id="select-boleto" class="input-control">
+                <option value="VIP">VIP ($10)</option>
+                <option value="GENERAL">GENERAL ($5)</option>
+                <option value="NIÑOS">NIÑOS($3.50)</option>
+            </select>
+        </div>
+
+        <div class="info-box">
+            <ul>
+                <li><span>🏟️</span> Sala asignada automáticamente (máx. 10 salas)</li>
+                <li><span>💺</span> Asiento automático sin repetición (40 por sala)</li>
+                <li><span>👨‍💼</span> Cajero automático (CAJ001 - CAJ010)</li>
+                <li><span>💰</span> Precio calculado automáticamente</li>
+            </ul>
+        </div>
+
+        <button class="btn-submit" id="btn-generar">
+            <i class="fa-solid fa-ticket"></i> Generar Boleto
+        </button>
+    </div>
+
+    <div class="ticket-card" id="panel-ticket">
+        <div class="ticket-header">
+            <hr>
+            <h2><span class="icon-red"><i class="fa-solid fa-ticket-simple"></i></span> Ticket Generado</h2>
+            <hr>
+        </div>
+
+        <div class="ticket-info-row">
+            <strong>N° Boleto:</strong> <span id="lbl-numero"></span>
+        </div>
+        <div class="ticket-info-row">
+            <strong>Cliente:</strong> <span id="lbl-cliente"></span>
+        </div>
+        <div class="ticket-info-row">
+            <strong>Cartelera:</strong> <span id="lbl-cartelera"></span>
+        </div>
+        <div class="ticket-info-row">
+            <strong>Película:</strong> <span id="lbl-pelicula"></span>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div class="ticket-stats">
+            <div class="stat-col">
+                <div class="stat-label">
+                    <i class="fa-solid fa-building" style="color:#a855f7;"></i> Sala
+                </div>
+                <div class="stat-value" id="lbl-sala">—</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-label">
+                    <i class="fa-solid fa-chair" style="color:#ef4444;"></i> Asiento
+                </div>
+                <div class="stat-value" id="lbl-asiento">—</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-label">
+                    <i class="fa-solid fa-user-tie" style="color:#a855f7;"></i> Cajero
+                </div>
+                <div class="stat-value" id="lbl-cajero">—</div>
+            </div>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div class="ticket-info-row">
+            <strong>Fecha:</strong> <span id="lbl-fecha"></span>
+        </div>
+        <div class="ticket-info-row">
+            <strong>Hora:</strong> <span id="lbl-hora"></span>
+        </div>
+
+        <div class="total-box">
+            <div class="total-label">
+                <i class="fa-solid fa-sack-dollar" style="color:#22c55e;"></i> Precio Total
+            </div>
+            <div class="total-price" id="lbl-precio">$0.00</div>
+        </div>
+    </div>
+
+    <div class="success-card" id="panel-exito">
+        <div class="success-icon">
+            <i class="fa-regular fa-circle-check"></i>
+        </div>
+        <div class="success-text">
+            <p><strong>Boleto generado y guardado correctamente.</strong></p>
+            <p>¡Gracias por su compra! El ticket ha sido registrado en el sistema.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const selectCartelera = document.getElementById('select-cartelera');
+    const selectPelicula  = document.getElementById('select-pelicula');
+    const badgeCartelera  = document.getElementById('badge-cartelera');
+    const badgeTexto      = document.getElementById('badge-texto');
+    const hintCartelera   = document.getElementById('hint-cartelera');
+    
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return '';
+    }
+
+    function mostrarError(mensaje) {
+        const panelError = document.getElementById('panel-error');
+        document.getElementById('lbl-error').textContent = mensaje;
+        panelError.style.display = 'flex';
+        panelError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function ocultarError() {
+        document.getElementById('panel-error').style.display = 'none';
+    }
+
+    async function cargarCarteleras() {
+        try {
+            const res  = await fetch('/boletos/carteleras/');
+            const data = await res.json();
+
+            if (!data.ok) {
+                mostrarError('No se pudieron cargar las carteleras.');
+                selectCartelera.innerHTML = '<option value="">Error al cargar carteleras</option>';
+                return;
+            }
+
+            selectCartelera.innerHTML = '<option value="">— Seleccione una cartelera —</option>';
+            data.carteleras.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value       = c.value;
+                opt.textContent = c.label;
+                selectCartelera.appendChild(opt);
+            });
+
+        } catch (err) {
+            mostrarError('Error de conexión al cargar las carteleras.');
+            selectCartelera.innerHTML = '<option value="">Error de conexión</option>';
+            console.error(err);
+        }
+    }
+
+    selectCartelera.addEventListener('change', async function () {
+        const idCartelera = this.value;
+
+        selectPelicula.innerHTML     = '<option value="">Cargando películas...</option>';
+        selectPelicula.disabled      = true;
+        badgeCartelera.style.display = 'none';
+        hintCartelera.textContent    = 'Cargando películas...';
+
+        if (!idCartelera) {
+            selectPelicula.innerHTML  = '<option value="">Primero seleccione una cartelera</option>';
+            hintCartelera.textContent = 'Seleccione una cartelera para ver las películas disponibles.';
+            return;
+        }
+
+        try {
+            const res  = await fetch(`/boletos/peliculas/?cartelera=${idCartelera}`);
+            const data = await res.json();
+
+            if (!data.ok) {
+                mostrarError(data.error || 'No se pudieron cargar las películas.');
+                selectPelicula.innerHTML = '<option value="">Error al cargar películas</option>';
+                return;
+            }
+
+            selectPelicula.innerHTML = '<option value="">— Seleccione una película —</option>';
+            data.peliculas.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value       = p.value;
+                opt.textContent = `${p.label} (${p.clasificacion} · ${p.duracion} min)`;
+                selectPelicula.appendChild(opt);
+            });
+
+            selectPelicula.disabled      = false;
+            badgeTexto.textContent       = selectCartelera.options[selectCartelera.selectedIndex].text;
+            badgeCartelera.style.display = 'inline-flex';
+            hintCartelera.textContent    = `${data.peliculas.length} película(s) disponibles.`;
+
+        } catch (err) {
+            mostrarError('Error de conexión al cargar las películas.');
+            selectPelicula.innerHTML = '<option value="">Error de conexión</option>';
+            console.error(err);
+        }
+    });
+
+    document.getElementById('btn-generar').addEventListener('click', async function () {
+
+        const btn = this;
+
+        document.getElementById('panel-ticket').style.display = 'none';
+        document.getElementById('panel-exito').style.display  = 'none';
+        ocultarError();
+
+        const payload = {
+            cedula:      document.getElementById('txt-cedula').value.trim(),
+            nombres:     document.getElementById('txt-nombres').value.trim(),
+            apellidos:   document.getElementById('txt-apellidos').value.trim(),
+            telefono:    document.getElementById('txt-telefono').value.trim(),
+            correo:      document.getElementById('txt-correo').value.trim(),
+            direccion:   document.getElementById('txt-direccion').value.trim(),
+            cartelera:   selectCartelera.value,
+            pelicula:    selectPelicula.value,
+            tipo_boleto: document.getElementById('select-boleto').value,
+        };
+
+        if (!payload.cartelera) {
+            mostrarError('Debe seleccionar una cartelera.');
+            return;
+        }
+        if (!payload.pelicula) {
+            mostrarError('Debe seleccionar una película.');
+            return;
+        }
+
+        btn.disabled  = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando...';
+
+        try {
+            const response = await fetch('/boletos/generar/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken':  getCookie('csrftoken'),
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+
+            if (!data.ok) {
+                mostrarError(data.error || 'Ocurrió un error inesperado.');
+                return;
+            }
+
+            const t = data.ticket;
+            document.getElementById('lbl-numero').textContent    = `#${t.numero_boleto}`;
+            document.getElementById('lbl-cliente').textContent   = t.cliente;
+            document.getElementById('lbl-cartelera').textContent = t.cartelera;
+            document.getElementById('lbl-pelicula').textContent  = t.pelicula;
+            document.getElementById('lbl-sala').textContent      = t.sala;
+            document.getElementById('lbl-asiento').textContent   = t.asiento;
+            document.getElementById('lbl-cajero').textContent    = t.cajero;
+            document.getElementById('lbl-fecha').textContent     = t.fecha;
+            document.getElementById('lbl-hora').textContent      = t.hora;
+            document.getElementById('lbl-precio').textContent    = t.precio;
+
+            document.getElementById('panel-ticket').style.display = 'block';
+            document.getElementById('panel-exito').style.display  = 'flex';
+            document.getElementById('panel-ticket').scrollIntoView({ behavior: 'smooth' });
+
+        } catch (err) {
+            mostrarError('Error de conexión con el servidor. Intente nuevamente.');
+            console.error(err);
+        } finally {
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="fa-solid fa-ticket"></i> Generar Boleto';
+        }
+    });
+
+    cargarCarteleras();
+
+});
+</script>
+
+</body>
+</html>
