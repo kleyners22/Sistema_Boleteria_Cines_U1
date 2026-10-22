@@ -1,6 +1,6 @@
 services:
   pg-master:
-    image: bitnami/postgresql:latest
+    image: soldevelo/postgresql:latest
     container_name: postgres-master
     environment:
       - POSTGRESQL_REPLICATION_MODE=master
@@ -18,7 +18,7 @@ services:
       - ./master/init:/docker-entrypoint-initdb.d
 
   pg-slave:
-    image: bitnami/postgresql:latest
+    image: soldevelo/postgresql:latest
     container_name: postgres-slave
     environment:
       - POSTGRESQL_REPLICATION_MODE=slave

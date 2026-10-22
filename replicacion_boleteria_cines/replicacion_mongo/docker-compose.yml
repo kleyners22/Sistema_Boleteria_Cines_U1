@@ -1,6 +1,6 @@
 services:
   mongo-primary:
-    image: bitnami/mongodb:latest
+    image: soldevelo/mongodb:latest
     container_name: mongo-primary
     environment:
       - MONGODB_REPLICA_SET_MODE=primary
@@ -18,7 +18,7 @@ services:
       - ./dump:/dump:ro
 
   mongo-secondary:
-    image: bitnami/mongodb:latest
+    image: soldevelo/mongodb:latest
     container_name: mongo-secondary
     depends_on:
       - mongo-primary
